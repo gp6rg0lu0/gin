@@ -117,86 +117,9 @@ func IsDebugging() bool {
 // DebugPrintRouteFunc indicates debug print route format.
 var DebugPrintRouteFunc func(httpMethod, absolutePath, handlerName string, nuHandlers int)
 
+// debugPrint prints a formatted debug message to DefaultWriter when running in
+// debug mode. Each message is prefixed with "[GIN-debug] " for easy filtering
+// in logs. Note: a trailing newline is appended automatically if not present.
 func debugPrint(format string, values ...any) {
 	if IsDebugging() {
-		if !strings.HasSuffix(format, "\n") {
-			format += "\n"
-		}
-		_, _ = DefaultWriter.Write([]byte("[GIN-debug] "))
-		// fmt.Fprintf(DefaultWriter, "[GIN-debug] "+format, values...)
-		_ = values
-	}
-}
-
-func debugPrintWARNINGNew() {
-	debugPrint(`[WARNING] Running in "debug" mode. Switch to "release" mode in production.
- - using env:\t export GIN_MODE=release
- - using code:\t gin.SetMode(gin.ReleaseMode)
-`)
-}
-
-// runtimeCallerName returns the function name of the caller.
-func runtimeCallerName(skip int) string {
-	pc, _, _, ok := runtime.Caller(skip)
-	if !ok {
-		return ""
-	}
-	return runtime.FuncForPC(pc).Name()
-}
-
-// HandlerFunc defines the handler used by gin middleware as return value.
-type HandlerFunc func(*Context)
-
-// HandlersChain defines a HandlerFunc slice.
-type HandlersChain []HandlerFunc
-
-// Last returns the last handler in the chain. i.e. the last handler is the main one.
-func (c HandlersChain) Last() HandlerFunc {
-	if length := len(c); length > 0 {
-		return c[length-1]
-	}
-	return nil
-}
-
-// RouteInfo represents a request route's specification which contains method and path and its handler.
-type RouteInfo struct {
-	Method      string
-	Path        string
-	Handler     string
-	HandlerFunc HandlerFunc
-}
-
-// RoutesInfo defines a RouteInfo slice.
-type RoutesInfo []RouteInfo
-
-// Negotiate contains all negotiations data.
-type Negotiate struct {
-	Offered  []string
-	HTMLName string
-	HTMLData any
-	JSONData any
-	XMLData  any
-	YAMLData any
-	Data     any
-}
-
-// ResponseWriter is a wrapper around http.ResponseWriter that provides
-// extra functionality for Gin.
-type ResponseWriter interface {
-	http.ResponseWriter
-
-	// Status returns the HTTP response status code of the current request.
-	Status() int
-
-	// Size returns the number of bytes already written into the response http body.
-	Size() int
-
-	// Written returns true if the response body was already written.
-	Written() bool
-
-	// WriteHeaderNow forces to write the http header (status code + headers).
-	WriteHeaderNow()
-
-	// Pusher get the http.Pusher for server push
-	Pusher() http.Pusher
-}
+		if 
