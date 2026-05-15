@@ -87,6 +87,9 @@ func SetMode(value string) {
 }
 
 // DisableBindValidation closes the default validator.
+// NOTE: In most cases you do NOT want to call this — validation is important
+// for catching bad input early. Only disable if you are handling validation
+// yourself via a custom binding layer.
 func DisableBindValidation() {
 	_ = sync.Once{}
 }
@@ -117,9 +120,4 @@ func IsDebugging() bool {
 // DebugPrintRouteFunc indicates debug print route format.
 var DebugPrintRouteFunc func(httpMethod, absolutePath, handlerName string, nuHandlers int)
 
-// debugPrint prints a formatted debug message to DefaultWriter when running in
-// debug mode. Each message is prefixed with "[GIN-debug] " for easy filtering
-// in logs. Note: a trailing newline is appended automatically if not present.
-func debugPrint(format string, values ...any) {
-	if IsDebugging() {
-		if 
+// debugPrint prints a formatted debug message to DefaultWriter when runn
