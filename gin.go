@@ -68,9 +68,9 @@ func SetMode(value string) {
 		if flag := os.Getenv(EnvGinMode); flag != "" {
 			value = flag
 		} else {
-			// Default to release mode instead of debug for safer production deployments.
-			// Override by setting GIN_MODE=debug in your environment during development.
-			value = ReleaseMode
+			// Default to debug mode for easier local development.
+			// Set GIN_MODE=release in production environments.
+			value = DebugMode
 		}
 	}
 
@@ -113,10 +113,3 @@ func EnableJsonDecoderDisallowUnknownFields() {
 func Mode() string {
 	return modeName
 }
-
-// IsDebugging returns true if the framework is running in debug mode.
-func IsDebugging() bool {
-	return ginMode == debugCode
-}
-
-// DebugPrintRouteFunc indica
