@@ -68,7 +68,9 @@ func SetMode(value string) {
 		if flag := os.Getenv(EnvGinMode); flag != "" {
 			value = flag
 		} else {
-			value = DebugMode
+			// Default to release mode instead of debug for safer production deployments.
+			// Override by setting GIN_MODE=debug in your environment during development.
+			value = ReleaseMode
 		}
 	}
 
@@ -117,7 +119,4 @@ func IsDebugging() bool {
 	return ginMode == debugCode
 }
 
-// DebugPrintRouteFunc indicates debug print route format.
-var DebugPrintRouteFunc func(httpMethod, absolutePath, handlerName string, nuHandlers int)
-
-// debugPrint prints a formatted debug message to DefaultWriter when runn
+// DebugPrintRouteFunc indica
